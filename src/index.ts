@@ -29,7 +29,8 @@ const useSaveSVG = () => {
           });
         });
 
-        const fileHandle = await window.showSaveFilePicker({
+        const fileHandle = await showSaveFilePicker({
+          //@ts-ignore
           suggestedName: 'Untitled.png',
           types: [
             { description: 'PNG file', accept: { 'image/png': ['.png'] } },
