@@ -29,16 +29,23 @@ const useSaveSVG = () => {
           });
         });
 
-        const fileHandle = await showSaveFilePicker({
-          //@ts-ignore
-          suggestedName: 'Untitled.png',
-          types: [
-            { description: 'PNG file', accept: { 'image/png': ['.png'] } },
-          ],
-        });
-        const writeable = await fileHandle.createWritable();
-        await writeable.write(image);
-        await writeable.close();
+        try {
+          const fileHandle = await showSaveFilePicker({
+            //@ts-ignore
+            suggestedName:
+              ref.current && ref.current.id
+                ? `${ref.current.id}.png`
+                : 'Untitled.png',
+            types: [
+              { description: 'PNG file', accept: { 'image/png': ['.png'] } },
+            ],
+          });
+          const writeable = await fileHandle.createWritable();
+          await writeable.write(image);
+          await writeable.close();
+        } catch (e) {
+          console.log('User aborted file save dialog', e);
+        }
       };
       img.src = url;
     }
@@ -47,7 +54,6 @@ const useSaveSVG = () => {
   const handleKeyPressEvent = (event: KeyboardEvent): void => {
     const { ctrlKey, shiftKey, key } = event;
     if (ctrlKey && shiftKey && key === 'S') {
-      console.log('save');
       saveSvg();
     }
   };
