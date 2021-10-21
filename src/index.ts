@@ -5,8 +5,27 @@ import { useEffect, useRef } from 'react';
  */
 const useSaveSVG = () => {
   const ref = useRef<SVGSVGElement>(null);
-
+  const div = useRef<HTMLDivElement>();
+  const displayProcessingOverlay = () => {
+    div.current = document.createElement('div');
+    div.current.id = 'processingOverlayDiv';
+    div.current.style.width = '100vw';
+    div.current.style.height = '100vh';
+    div.current.style.position = 'fixed';
+    div.current.style.top = '0';
+    div.current.style.left = '0';
+    div.current.style.background = 'black';
+    div.current.style.opacity = '0.85';
+    div.current.style.display = 'flex';
+    div.current.style.color = 'white';
+    div.current.style.alignItems = 'center';
+    div.current.style.justifyContent = 'center';
+    div.current.innerHTML = 'Processing...';
+    document.body.appendChild(div.current);
+    console.log(div.current);
+  };
   const saveSvg = async () => {
+    displayProcessingOverlay();
     if (ref.current) {
       const svgText = new XMLSerializer().serializeToString(ref.current);
       const svg = new Blob([svgText], { type: 'image/svg+xml;charset=ut6-8' });
@@ -28,7 +47,7 @@ const useSaveSVG = () => {
             }
           });
         });
-
+        const divr = document.querySelector('#processingOverlayDiv');
         try {
           const fileHandle = await showSaveFilePicker({
             //@ts-ignore
@@ -43,8 +62,10 @@ const useSaveSVG = () => {
           const writeable = await fileHandle.createWritable();
           await writeable.write(image);
           await writeable.close();
+          if (div.current) document.body.removeChild(div.current);
         } catch (e) {
           console.log('User aborted file save dialog', e);
+          if (div.current) document.body.removeChild(div.current);
         }
       };
       img.src = url;
