@@ -1,6 +1,6 @@
 {
   "name": "@dopplerreflect/use-save-svg",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "React use hook to save SVG as PNG",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
