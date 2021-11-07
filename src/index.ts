@@ -18,7 +18,6 @@ const displayProcessingOverlay = (
   div.current.style.justifyContent = 'center';
   div.current.innerHTML = 'Processing...';
   document.body.appendChild(div.current);
-  console.log(div.current);
 };
 
 let div: React.MutableRefObject<HTMLDivElement | undefined>;
@@ -26,8 +25,6 @@ let div: React.MutableRefObject<HTMLDivElement | undefined>;
  * @description Adds a KeyPress event listener, and on ctrl + shift + s opens a Save dialog and saves the SVG image as a PNG file.
  */
 const useSaveSVG = () => {
-  console.log('loaded useSaveSVG');
-
   const svgElementRef = useRef<SVGSVGElement>(null);
   div = useRef<HTMLDivElement>();
 
@@ -111,7 +108,6 @@ const useSaveSVG = () => {
 
   const handleKeyPressEvent = (event: KeyboardEvent): void => {
     event.preventDefault();
-    console.log(event);
     const { ctrlKey, metaKey, key } = event;
     if (ctrlKey && metaKey && key === 'p') {
       savePng();
